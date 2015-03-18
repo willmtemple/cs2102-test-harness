@@ -2,6 +2,8 @@
 
 JDK_PATH=/opt/oracle/jdk-current/bin/
 TESTER_LIB=/home/wmtemple/.bin/libs/testerV1_3_5.jar
+COVERAGE_AGENT=/_dev/libs/jacoco-0.7.4.201502262128/lib/jacocoagent.jar
+COVERAGE_REPORT=/_dev/libs/coverage.jar
 
 for D in `find . -mindepth 1 -maxdepth 1 -type d`; do
     cd $D
@@ -39,6 +41,8 @@ for D in `find . -mindepth 1 -maxdepth 1 -type d`; do
     	echo "FAILED TO COMPILE"
     else
     	${JDK_PATH}java -cp ${TESTER_LIB}:bin tester.Main > log/tests.out 2>&1
+        ${JDK_PATH}java -cp ${TESTER_LIB}\;bin -javaagent:${COVERAGE_AGENT} tester.Main > /dev/null 2>&1
+        ${JDK_PATH}java -jar ${COVERAGE_REPORT} > log/coverage.txt
     fi
     
     cd ..
